@@ -24,7 +24,7 @@ class CapitalInputs:
 class OMInputs:
     def __init__(self,
                 fixed_om_expense_yr_one: float = 5.00,
-                variable_om_expense_yr_one: float = 0.0,
+                variable_om_expense_yr_one: float = 0.01,
                 om_cost_inflation_initial: float = 0.016,
                 initial_period_end: int = 10,
                 om_cost_inflation_subse: float = 0.016,
