@@ -1,7 +1,7 @@
 class ProjectInputs:
     def __init__(self, 
                 nameplate_capacity: int = 2200, 
-                ncf_yr_one: float = 0.18, 
+                ncf_yr_one: float = 0.180456458333333, 
                 annual_production_degradation: int = 0.005, 
                 project_useful_life: int = 25):
         self.nameplate_capacity = nameplate_capacity
@@ -11,10 +11,10 @@ class ProjectInputs:
 
 class CapitalInputs:
     def __init__(self,
-                generation_equipment: int = 2000000,
-                balance_of_plant: int = 2000000,
-                interconnection: int = 500000,
-                dev_costs: int = 1000000):
+                generation_equipment: int = 2_000_000,
+                balance_of_plant: int = 2_000_000,
+                interconnection: int = 500_000,
+                dev_costs: int = 1_000_000):
         self.generation_equipment= generation_equipment
         self.balance_of_plant= balance_of_plant
         self.interconnection= interconnection
@@ -29,10 +29,10 @@ class OMInputs:
                 initial_period_end: int = 10,
                 om_cost_inflation_subse: float = 0.016,
                 insurance_yr_one_pc: float = 0.005,
-                project_management_yr_one: int = 50000,
-                property_tax: int = 50000,
+                project_management_yr_one: int = 50_000,
+                property_tax: int = 50_000,
                 annual_prop_tax_adjustment: float = -0.1,
-                land_lease: int = 5000,
+                land_lease: int = 5_000,
                 royalties_pc: float = 0.03):
         self.fixed_om_expense_yr_one= fixed_om_expense_yr_one
         self.variable_om_expense_yr_one= variable_om_expense_yr_one
@@ -48,22 +48,22 @@ class OMInputs:
 
 class ConstructionInputs:
         def __init__(self,
-                construction_period: int, 
-                construction_interest_rate: float,
+                construction_period: int = 6, 
+                construction_interest_rate: float = 0.05,
                 ):
                 self.construction_period= construction_period
                 self.construction_interest_rate= construction_interest_rate
 
 class PFinCosts:
         def __init__(self,
-                pc_debt: float,
-                debt_term: int,
-                debt_interest_rate: float,
-                lender_fee: float,
-                required_min_dscr: float,
-                required_avg_dscr: float,
-                target_after_tax_equity_irr: float,
-                other_closing_costs: int):
+                pc_debt: float = 0.45,
+                debt_term: int = 18,
+                debt_interest_rate: float = 0.07,
+                lender_fee: float = 0.03,
+                required_min_dscr: float = 1.20,
+                required_avg_dscr: float = 1.45,
+                target_after_tax_equity_irr: float = 0.15,
+                other_closing_costs: int = 0):
                 self.pc_debt= pc_debt
                 self.debt_term= debt_term
                 self.debt_interest_rate= debt_interest_rate
@@ -75,11 +75,11 @@ class PFinCosts:
 
 class TaxInputs:
         def __init__(self,
-                taxable: bool,
-                fed_income_tax_rate: float,
-                fed_generated: bool,
-                state_income_tax_rate: float,
-                state_generated: bool):
+                taxable: bool = True,
+                fed_income_tax_rate: float = 0.35,
+                fed_generated: bool = False,
+                state_income_tax_rate: float = 0.085,
+                state_generated: bool = False):
                 self.taxable= taxable
                 self.fed_income_tax_rate= fed_income_tax_rate
                 self.fed_generated= fed_generated

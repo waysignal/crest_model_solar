@@ -42,3 +42,23 @@ def test_production():
     actual = model.production()
     expected = np.array([3477757,3460368,3443066,3425851,3408722,3391678,3374720,3357846,3341057,3324352,3307730,3291191,3274735,3258362,3242070,3225859,3209730,3193681,3177713,3161824,3146015,3130285,3114634,3099061,3083565])
     assert_array_almost_equal(actual,expected,0)
+
+def test_tariff_rate_total():
+    actual = model.tariff_rate_total()
+    expected = np.array([28.05,28.61,29.18,29.77,30.36,30.97,31.59,32.22,32.87,33.52,34.19,34.88,35.57,36.29,37.01,37.75,38.51,39.28,40.06,40.86,0.00,0.00,0.00,0.00,0.00])
+    assert_array_almost_equal(actual,expected,2)
+
+def test_revenue_from_tariff():
+    actual = model.revenue_from_tariff()
+    expected = np.array([975511,990046,1004798,1019769,1034964,1050385,1066035,1081919,1098040,1114401,1131005,1147857,1164960,1182318,1199935,1217814,1235959,1254375,1273065,1292034,0,0,0,0,0])
+    assert_array_equal(actual,expected)
+
+def test_market_revenue():
+    actual = model.market_revenue()
+    expected = np.array([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,284103,291163,298398,305813,313413])
+    assert_array_equal(actual,expected)
+
+def test_royalties():
+    actual = model.royalties()
+    expected = np.array([-29265,-29701,-30144,-30593,-31049,-31512,-31981,-32458,-32941,-33432,-33930,-34436,-34949,-35470,-35998,-36534,-37079,-37631,-38192,-38761,-8523,-8735,-8952,-9174,-9402])
+    assert_array_equal(actual,expected)
