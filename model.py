@@ -53,8 +53,33 @@ class Model():
         self.forecasted_voe = forecasted_inputs.forecasted_value_of_energy
         self.forecasted_escal_rate = forecasted_inputs.forecasted_escal_rate
 
-
+        self.pfin_pc_debt= pfin_inputs.pc_debt
+        self.pfin_debt_term= pfin_inputs.debt_term
+        self.pfin_debt_interest_rate= pfin_inputs.debt_interest_rate
+        self.pfin_lender_fee= pfin_inputs.lender_fee
+        self.pfin_required_min_dscr= pfin_inputs.required_min_dscr
+        self.pfin_required_avg_dscr= pfin_inputs.required_avg_dscr
+        self.pfin_target_after_tax_equity_irr= pfin_inputs.target_after_tax_equity_irr
+        self.pfin_other_closing_costs= pfin_inputs.other_closing_costs
+        self.summary_grants=0
+        self.summary_senior_debt= self.pfin_pc_debt * (self.capital_generation_equipment \
+                                                        + self.capital_balance_of_plant \
+                                                        + self.capital_interconnection \
+                                                        + self.capital_dev_costs) - self.summary_grants
+        
+        self.inverter_first_replacement= capex_inverter_inputs.first_replacement
+        self.inverter_first_replacement_cost_watt= capex_inverter_inputs.first_replacement_cost
+        self.inverter_second_replacement= capex_inverter_inputs.second_replacement
+        self.inverter_second_replacement_cost_watt= capex_inverter_inputs.second_replacement_cost
+        self.res_fund_from_operations= reserves_inputs.fund_from_operations
+        self.res_reserve_req= reserves_inputs.reserve_req
+        self.res_debt_service_req= reserves_inputs.debt_service_req
+        self.res_om_wc_req= reserves_inputs.om_wc_req
+        self.res_interest_on_reserves= reserves_inputs.interest_on_reserves
+        self.res_debt_service_req_dollars= abs(npf.pmt(self.pfin_debt_interest_rate,  self.pfin_debt_term , self.summary_senior_debt)/12 * self.res_debt_service_req).round(0)
         self.results_coe = 28.05
+        self.res_om_wc_req_dollars= abs((np.average(self.total_operating_expenses())/12 * self.res_om_wc_req).round(0))
+        
 
 
 
@@ -129,4 +154,58 @@ class Model():
     def royalties(self):
         return -(self.om_royalties_pc *  (self.revenue_from_tariff() + self.market_revenue())).round(0) 
 
+    def total_operating_expenses(self):
+        return self.fixed_om_expense() \
+            + self.var_om_expense() \
+            + self.insurance() \
+            + self.project_management() \
+            + self.property_taxes() \
+            + self.land_lease() \
+            + self.royalties()
+
+    def reserve_accounts(self):
+        l = np.array([0,self.res_debt_service_req_dollars, self.res_om_wc_req_dollars, 0, 0])
+        l = np.append(l,np.sum(l))
+        #Decommissioning Reserve
+        df = pd.DataFrame(columns= range(self.proj_project_useful_life+1), index = ['Beginning Balance','Debt Service Reserve','O&M/Working Capital Reserve','Major Equipment Replacement Reserves','Decommissioning Reserve','Ending Balance'])
+        df[0] = l
+        for i in range(1,self.proj_project_useful_life+1):
+            if (i == self.pfin_debt_term + 1):
+                ds = -self.res_debt_service_req_dollars
+            else:
+                ds = 0 
+
+            if (i == self.proj_project_useful_life):
+                om = -self.res_om_wc_req_dollars
+            else:
+                om = 0
+
+            if (i < self.inverter_first_replacement):
+                e = (self.inverter_first_replacement_cost_watt * self.proj_nameplate_capacity)/(self.inverter_first_replacement - 1) * 1000
+
+            elif ( i == self.inverter_first_replacement): 
+                e = -self.inverter_first_replacement_cost_watt * self.proj_nameplate_capacity * 1000
+            elif ( i < self.inverter_second_replacement):
+                e = (self.inverter_second_replacement_cost_watt * self.proj_nameplate_capacity)/(self.inverter_second_replacement - self.inverter_first_replacement - 1) * 1000
+                
+            elif ( i == self.inverter_second_replacement):
+                e = -self.inverter_second_replacement_cost_watt * self.proj_nameplate_capacity * 1000
+            else: 
+                e = 0
+            d = np.array([df.loc['Ending Balance'][i-1],ds,om,e,0])
+            d = np.append(d,np.sum(d))
+            df[i] = d
+
+        df = df.astype('int')
+        return df
+
+    def interest_on_reserves(self):
+        df = self.reserve_accounts()
+        l = np.array([])
+        for i in range(1,self.proj_project_useful_life + 1):
+            l = (np.append(l, (df.loc['Beginning Balance'][i] + df.loc['Ending Balance'][i])/2 * self.res_interest_on_reserves)).round(0)
+        return l
+        
+    def project_revenue_all(self):
+        return self.revenue_from_tariff() + self.market_revenue() + self.interest_on_reserves()
 
