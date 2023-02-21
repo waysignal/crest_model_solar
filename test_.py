@@ -62,3 +62,69 @@ def test_royalties():
     actual = model.royalties()
     expected = np.array([-29265,-29701,-30144,-30593,-31049,-31512,-31981,-32458,-32941,-33432,-33930,-34436,-34949,-35470,-35998,-36534,-37079,-37631,-38192,-38761,-8523,-8735,-8952,-9174,-9402])
     assert_array_equal(actual,expected)
+
+
+def test_total_operating_expenses():
+    actual = model.total_operating_expenses()
+    expected = np.array([-173113,-170049,-167515,-165463,-163846,-162626,-161767,-161236,-161004,-161045,-161336,-161856,-162586,-163508,-164609,-165874,-167292,-168851,-170542,-172356,-143470,-145133,-146896,-148752,-150697])
+    assert_allclose(actual,expected,0.00005)
+
+def test_interest_on_reserves():
+    actual = model.interest_on_reserves()
+    expected = np.array([4651,5800,6949,8098,9247,10396,11545,12694,13843,9247,4676,5874,7071,8269,9467,10665,11863,13060,13028,7007,1617,1617,1617,1617,808])
+    assert_array_equal(actual,expected)
+
+def test_project_revenue_all():
+    actual = model.project_revenue_all()
+    expected = np.array([980162,995846,1011747,1027867,1044211,1060781,1077580,1094613,1111882,1123648,1135681,1153731,1172032,1190587,1209402,1228479,1247822,1267435,1286093,1299040,285719,292779,300015,307430,314221])
+    assert_allclose(actual,expected,0.000005)
+
+def test_ebitda():
+    actual = model.ebitda()
+    expected = np.array([807049,825797,844232,862405,880364,898154,915813,933377,950878,962602,974345,991875,1009446,1027079,1044793,1062604,1080530,1098584,1115551,1126685,142249,147646,153119,158678,163524])
+    assert_allclose(actual,expected,0.00005)
+
+def test_operating_income_after_interest_expense():
+    actual = model.operating_income_after_interest_expense()
+    expected = np.array([633799,657643,681530,705537,729739,754208,779014,804226,829910,850389,871500,899054,927351,956460,986454,1017405,1049390,1082488,1115551,1126685,142249,147646,153119,158678,163524])
+    assert_allclose(actual,expected,0.00005)
+
+def test_annual_conliq_reserves():
+    actual = model.annual_conliq_reserves()
+    expected = -np.array([-57444,-57444,-57444,-57444,-57444,-57444,-57444,-57444,-57444,517000,-59889,-59889,-59889,-59889,-59889,-59889,-59889,-59889,63134,539000,-0,-0,-0,-0,80828])
+    assert_allclose(actual,expected,0.0005)
+
+def test_adjustments_major_equipment():
+    actual = model.adjustments_major_equipment()
+    expected = -np.array([0,0,0,0,0,0,0,0,0,517000,0,0,0,0,0,0,0,0,0,539000,0,0,0,0,0])
+    assert_array_equal(actual,expected)
+
+def test_pretax_cash_flow_to_equity():
+    actual = model.pretax_cash_flow_to_equity()
+    expected = np.array([503559,522307,540741,558914,576874,594663,612322,629886,647388,716556,668410,685940,703511,721144,738857,756669,774595,792649,1178685,1126685,142249,147646,153119,158678,244352])
+    assert_allclose(actual,expected,0.00005)
+
+def test_net_pretax_cash_flow_to_equity():
+    actual = model.net_pretax_cash_flow_to_equity()
+    expected = np.array([-3371852,503559,522307,540741,558914,576874,594663,612322,629886,647388,716556,668410,685940,703511,721144,738857,756669,774595,792649,1178685,1126685,142249,147646,153119,158678,244352])
+    assert_allclose(actual,expected,0.00005)
+
+def test_annual_depreciation_expense():
+    actual = model.annual_depreciation_expense()
+    expected = np.array([3054298,607661,386920,253782,251875,151866,52775,52775,52799,156175,218239,151990,112310,112285,82530,29384,6041,6041,6041,113841,175500,103488,62093,62093,31046])
+    assert_allclose(actual,expected,0.00005)
+
+def test_taxable_income():
+    actual = model.taxable_income()
+    expected = np.array([-2420498,49982,294610,451755,477864,602342,726240,751451,777110,694215,653261,747064,815041,844176,903923,988021,1043349,1076447,1109510,1012844,-33251,44158,91026,96585,132478])
+    assert_allclose(actual,expected,0.0005)
+
+def test_taxable_income_with_carry_forward():
+    actual = model.taxable_income_with_carry_forward()
+    expected = np.array([0,0,0,0,0,0,182295,751451,777110,694215,653261,747064,815041,844176,903923,988021,1043349,1076447,1109510,1012844,0,10907,91026,96585,132478])
+    assert_allclose(actual,expected,0.0005)
+
+def test_after_tax_cash_flow_to_equity():
+    actual = model.after_tax_cash_flow_to_equity()
+    expected = np.array([-3371852,503559,522307,540741,558914,576874,594663,596827,566013,581333,657548,600652,383192,373216,379042,372542,356273,351778,356419,729056,716230,142249,143226,116230,119537,190666])
+    assert_allclose(actual,expected,0.00005)
