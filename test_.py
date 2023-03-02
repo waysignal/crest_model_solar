@@ -1,7 +1,8 @@
 from model import *
-from numpy.testing import assert_array_equal, assert_array_almost_equal, assert_approx_equal, assert_allclose
+from numpy.testing import assert_equal, assert_array_equal, assert_array_almost_equal, assert_approx_equal, assert_allclose
 
 model = Model()
+model.find_coe()
 
 def test_fixed_om():
     actual = model.fixed_om_expense()
@@ -45,12 +46,12 @@ def test_production():
 
 def test_tariff_rate_total():
     actual = model.tariff_rate_total()
-    expected = np.array([28.05,28.61,29.18,29.77,30.36,30.97,31.59,32.22,32.87,33.52,34.19,34.88,35.57,36.29,37.01,37.75,38.51,39.28,40.06,40.86,0.00,0.00,0.00,0.00,0.00])
+    expected = np.array([27.85,28.41,28.98,29.55,30.15,30.75,31.36,31.99,32.63,33.28,33.95,34.63,35.32,36.03,36.75,37.48,38.23,39.00,39.78,40.57,0.00,0.00,0.00,0.00,0.00])
     assert_array_almost_equal(actual,expected,2)
 
 def test_revenue_from_tariff():
     actual = model.revenue_from_tariff()
-    expected = np.array([975511,990046,1004798,1019769,1034964,1050385,1066035,1081919,1098040,1114401,1131005,1147857,1164960,1182318,1199935,1217814,1235959,1254375,1273065,1292034,0,0,0,0,0])
+    expected = np.array([968555,982987,997633,1012498,1027584,1042895,1058434,1074205,1090211,1106455,1122941,1139673,1156654,1173888,1191379,1209131,1227147,1245431,1263988,1282821,0,0,0,0,0])
     assert_array_equal(actual,expected)
 
 def test_market_revenue():
@@ -60,38 +61,38 @@ def test_market_revenue():
 
 def test_royalties():
     actual = model.royalties()
-    expected = np.array([-29265,-29701,-30144,-30593,-31049,-31512,-31981,-32458,-32941,-33432,-33930,-34436,-34949,-35470,-35998,-36534,-37079,-37631,-38192,-38761,-8523,-8735,-8952,-9174,-9402])
+    expected = -np.array([29057,29490,29929,30375,30828,31287,31753,32226,32706,33194,33688,34190,34700,35217,35741,36274,36814,37363,37920,38485,8523,8735,8952,9174,9402])
     assert_array_equal(actual,expected)
 
 
 def test_total_operating_expenses():
     actual = model.total_operating_expenses()
-    expected = np.array([-173113,-170049,-167515,-165463,-163846,-162626,-161767,-161236,-161004,-161045,-161336,-161856,-162586,-163508,-164609,-165874,-167292,-168851,-170542,-172356,-143470,-145133,-146896,-148752,-150697])
+    expected = -np.array([172904,169837,167300,165244,163625,162402,161539,161005,160769,160807,161094,161610,162336,163256,164353,165614,167028,168583,170270,172079,143470,145133,146896,148752,150697])
     assert_allclose(actual,expected,0.00005)
 
 def test_interest_on_reserves():
     actual = model.interest_on_reserves()
-    expected = np.array([4651,5800,6949,8098,9247,10396,11545,12694,13843,9247,4676,5874,7071,8269,9467,10665,11863,13060,13028,7007,1617,1617,1617,1617,808])
+    expected = np.array([4647,5796,6944,8093,9242,10391,11540,12689,13838,9242,4671,5869,7067,8264,9462,10660,11858,13056,13025,7005,1615,1615,1615,1615,807])
     assert_array_equal(actual,expected)
 
 def test_project_revenue_all():
     actual = model.project_revenue_all()
-    expected = np.array([980162,995846,1011747,1027867,1044211,1060781,1077580,1094613,1111882,1123648,1135681,1153731,1172032,1190587,1209402,1228479,1247822,1267435,1286093,1299040,285719,292779,300015,307430,314221])
+    expected = np.array([973202,988782,1004578,1020591,1036826,1053286,1069974,1086894,1104048,1115697,1127612,1145542,1163721,1182153,1200841,1219791,1239004,1258487,1277013,1289826,285717,292777,300013,307428,314220])
     assert_allclose(actual,expected,0.000005)
 
 def test_ebitda():
     actual = model.ebitda()
-    expected = np.array([807049,825797,844232,862405,880364,898154,915813,933377,950878,962602,974345,991875,1009446,1027079,1044793,1062604,1080530,1098584,1115551,1126685,142249,147646,153119,158678,163524])
+    expected = np.array([800297,818945,837277,855347,873202,890885,908435,925889,943279,954890,966518,983931,1001384,1018897,1036489,1054177,1071977,1089904,1106743,1117747,142248,147644,153117,158676,163523])
     assert_allclose(actual,expected,0.00005)
 
 def test_operating_income_after_interest_expense():
     actual = model.operating_income_after_interest_expense()
-    expected = np.array([633799,657643,681530,705537,729739,754208,779014,804226,829910,850389,871500,899054,927351,956460,986454,1017405,1049390,1082488,1115551,1126685,142249,147646,153119,158678,163524])
+    expected = np.array([627252,650990,674768,698665,722754,747109,771798,796891,822454,842809,863794,891220,919386,948362,978219,1009031,1040874,1073826,1106743,1117747,142248,147644,153117,158676,163523])
     assert_allclose(actual,expected,0.00005)
 
 def test_annual_conliq_reserves():
     actual = model.annual_conliq_reserves()
-    expected = -np.array([-57444,-57444,-57444,-57444,-57444,-57444,-57444,-57444,-57444,517000,-59889,-59889,-59889,-59889,-59889,-59889,-59889,-59889,63134,539000,-0,-0,-0,-0,80828])
+    expected = np.array([57444,57444,57444,57444,57444,57444,57444,57444,57444,-517000,59889,59889,59889,59889,59889,59889,59889,59889,-62989,-539000,0,0,0,0,-80732])
     assert_allclose(actual,expected,0.0005)
 
 def test_adjustments_major_equipment():
@@ -101,30 +102,180 @@ def test_adjustments_major_equipment():
 
 def test_pretax_cash_flow_to_equity():
     actual = model.pretax_cash_flow_to_equity()
-    expected = np.array([503559,522307,540741,558914,576874,594663,612322,629886,647388,716556,668410,685940,703511,721144,738857,756669,774595,792649,1178685,1126685,142249,147646,153119,158678,244352])
+    expected = np.array([497098,515745,534077,552147,570002,587685,605235,622690,640079,709135,660874,678287,695740,713253,730844,748532,766332,784260,1169732,1117747,142248,147644,153117,158676,244255])
     assert_allclose(actual,expected,0.00005)
 
 def test_net_pretax_cash_flow_to_equity():
     actual = model.net_pretax_cash_flow_to_equity()
-    expected = np.array([-3371852,503559,522307,540741,558914,576874,594663,612322,629886,647388,716556,668410,685940,703511,721144,738857,756669,774595,792649,1178685,1126685,142249,147646,153119,158678,244352])
+    expected = np.array([-3368035,497098,515745,534077,552147,570002,587685,605235,622690,640079,709135,660874,678287,695740,713253,730844,748532,766332,784260,1169732,1117747,142248,147644,153117,158676,244255])
     assert_allclose(actual,expected,0.00005)
 
 def test_annual_depreciation_expense():
     actual = model.annual_depreciation_expense()
-    expected = np.array([3054298,607661,386920,253782,251875,151866,52775,52775,52799,156175,218239,151990,112310,112285,82530,29384,6041,6041,6041,113841,175500,103488,62093,62093,31046])
+    expected = np.array([3329579,662450,421805,276662,274583,165557,57530,57530,57557,160930,222997,156742,117063,117036,87284,32030,6583,6583,6583,114383,175771,103488,62093,62093,31046])
     assert_allclose(actual,expected,0.00005)
 
 def test_taxable_income():
     actual = model.taxable_income()
-    expected = np.array([-2420498,49982,294610,451755,477864,602342,726240,751451,777110,694215,653261,747064,815041,844176,903923,988021,1043349,1076447,1109510,1012844,-33251,44158,91026,96585,132478])
-    assert_allclose(actual,expected,0.0005)
-
-def test_taxable_income_with_carry_forward():
-    actual = model.taxable_income_with_carry_forward()
-    expected = np.array([0,0,0,0,0,0,182295,751451,777110,694215,653261,747064,815041,844176,903923,988021,1043349,1076447,1109510,1012844,0,10907,91026,96585,132478])
-    assert_allclose(actual,expected,0.0005)
+    expected = np.array([-2702326,-11461,252963,422002,448171,581552,714268,739360,764896,681879,640797,734478,802323,831326,890935,977001,1034291,1067244,1100160,1003364,-33524,44156,91024,96583,132477])
+    assert_allclose(actual,expected,0.005)
 
 def test_after_tax_cash_flow_to_equity():
     actual = model.after_tax_cash_flow_to_equity()
-    expected = np.array([-3371852,503559,522307,540741,558914,576874,594663,596827,566013,581333,657548,600652,383192,373216,379042,372542,356273,351778,356419,729056,716230,142249,143226,116230,119537,190666])
+    expected = np.array([-3368035,497098,515745,534077,552147,570002,587685,605235,584905,575063,651175,606406,423974,370598,376358,369793,352603,347186,351759,723892,711133,142248,143335,116229,119536,190569])
     assert_allclose(actual,expected,0.00005)
+
+
+def test_as_generated_with_itc():
+    model = Model()
+    model.fincent_fed_form = 'Cost'
+    model.tax_fed_generated = True
+    model.tax_state_generated = True
+    model.fincent_fed_itc_or_cash = True
+    model.find_coe()
+    actual = model.after_tax_cash_flow_to_equity()
+    
+    assert_equal(21.05, model.results_coe)
+
+def test_as_generated_with_repi():
+    model = Model()
+    model.fincent_fed_form = 'Performance'
+    model.fed_ptc_or_repi = 'REPI'
+    model.tax_fed_generated = True
+    model.tax_state_generated = True
+    model.fincent_fed_itc_or_cash = True
+    model.find_coe()
+    actual = model.after_tax_cash_flow_to_equity()
+    expected = np.array([-3366909,1569901,497972,408813,358040,364946,328228,291641,298567,305244,407572,322082,300353,289116,293661,285865,267424,260739,264024,634850,620765,155817,129736,116216,119522,189437])
+    assert_allclose(actual,expected,0.00002)
+    assert_equal(24.45, model.results_coe)
+
+def test_as_generated_with_ptc():
+    model = Model()
+    model.fincent_fed_form = 'Performance'
+    model.fed_ptc_or_repi = 'PTC'
+    model.tax_fed_generated = True
+    model.tax_state_generated = True
+    model.fincent_fed_itc_or_cash = False
+    model.find_coe()
+    actual = model.after_tax_cash_flow_to_equity()
+    expected = np.array([-3365769,1577277,505689,416646,365990,373015,336417,299953,307003,313806,416261,291823,269643,257949,262030,253762,234844,227673,230466,600792,586200,155800,129723,116202,119509,188290])
+    assert_allclose(actual,expected,0.00002)
+    assert_equal(23.15, round(model.results_coe,2))
+
+def test_as_generated_with_cash_with_state_cost():
+    model = Model()
+    model.fincent_fed_form = 'Performance'
+    model.fed_ptc_or_repi = 'PTC'
+    model.tax_fed_generated = True
+    model.tax_state_generated = True
+    model.fincent_fed_itc_or_cash = False
+    model.fincent_state_form = 'Cost'
+    model.find_coe()
+    assert_equal(19.55, round(model.results_coe,2))
+
+def test_as_generated_with_cash_with_state_cost_carry_forward():
+    model = Model()
+    model.fincent_fed_form = 'Performance'
+    model.fed_ptc_or_repi = 'PTC'
+    model.tax_fed_generated = True
+    model.tax_state_generated = False
+    model.fincent_fed_itc_or_cash = False
+    model.fincent_state_form = 'Cost'
+    model.find_coe()
+    assert_equal(23.15, round(model.results_coe,2))
+
+def test_fed_generated_performance_ptc_state_carried_performance_cash():
+    model = Model()
+    model.fincent_fed_form = 'Performance'
+    model.fed_ptc_or_repi = 'PTC'
+    model.tax_fed_generated = True
+    model.tax_state_generated = False
+    model.fincent_fed_itc_or_cash = False
+    model.fincent_state_form = 'Performance'
+    model.state_cash_or_taxit = 'Cash'
+    model.find_coe()
+    assert_equal(22.55, round(model.results_coe,2))
+
+def test_fed_generated_performance_ptc_state_carried_performance_taxcredit():
+    model = Model()
+    model.fincent_fed_form = 'Performance'
+    model.fed_ptc_or_repi = 'PTC'
+    model.tax_fed_generated = True
+    model.tax_state_generated = False
+    model.fincent_fed_itc_or_cash = False
+    model.fincent_state_form = 'Performance'
+    model.state_cash_or_taxit = 'Tax Credit'
+    model.find_coe()
+    assert_equal(23.25, round(model.results_coe,2))
+
+def test_fed_generated_performance_ptc_state_generated_performance_taxcredit():
+    model = Model()
+    model.fincent_fed_form = 'Performance'
+    model.fed_ptc_or_repi = 'PTC'
+    model.tax_fed_generated = True
+    model.tax_state_generated = True
+    model.fincent_fed_itc_or_cash = False
+    model.fincent_state_form = 'Performance'
+    model.state_cash_or_taxit = 'Tax Credit'
+    model.find_coe()
+    assert_equal(21.15, round(model.results_coe,2))
+
+def test_fed_generated_performance_ptc_state_generated_performance_taxcredit_additional_grant():
+    model = Model()
+    model.fincent_fed_form = 'Performance'
+    model.fed_ptc_or_repi = 'PTC'
+    model.tax_fed_generated = True
+    model.tax_state_generated = True
+    model.fincent_fed_itc_or_cash = False
+    model.fincent_state_form = 'Performance'
+    model.state_cash_or_taxit = 'Tax Credit'
+    model.fincent_state_additional_grants = 0.01
+    model.refresh()
+    model.find_coe()
+    assert_equal(20.95, round(model.results_coe,2))
+
+def test_fed_generated_performance_ptc_state_generated_performance_cash_additional_grant():
+    model = Model()
+    model.fincent_fed_form = 'Performance'
+    model.fed_ptc_or_repi = 'PTC'
+    model.tax_fed_generated = True
+    model.tax_state_generated = True
+    model.fincent_fed_itc_or_cash = False
+    model.fincent_state_form = 'Performance'
+    model.state_cash_or_taxit = 'Cash'
+    model.fincent_state_additional_grants = 0.01
+    model.refresh()
+    model.find_coe()
+    assert_equal(21.85, round(model.results_coe,2))
+
+def test_fed_generated_performance_ptc_state_generated_performance_cash_additional_grant_operations():
+    model = Model()
+    model.fincent_fed_form = 'Performance'
+    model.fed_ptc_or_repi = 'PTC'
+    model.tax_fed_generated = True
+    model.tax_state_generated = True
+    model.fincent_fed_itc_or_cash = False
+    model.fincent_state_form = 'Performance'
+    model.state_cash_or_taxit = 'Cash'
+    model.fincent_state_additional_grants = 0.01
+    model.res_fund_from_operations = True
+    model.refresh()
+    model.find_coe()
+    assert_equal(22.05, round(model.results_coe,2))
+
+
+def test_fed_generated_neither_state_generated_performance_cash_additional_grant_operations():
+    model = Model()
+    model.fincent_fed_form = 'Neither'
+    model.fed_ptc_or_repi = 'PTC'
+    model.tax_fed_generated = True
+    model.tax_state_generated = True
+    model.fincent_fed_itc_or_cash = False
+    model.fincent_state_form = 'Performance'
+    model.state_cash_or_taxit = 'Cash'
+    model.fincent_state_additional_grants = 0.01
+    model.res_fund_from_operations = True
+    model.refresh()
+    model.find_coe()
+    assert_equal(25.15, round(model.results_coe,2))

@@ -88,9 +88,9 @@ class TaxInputs:
 
 class TariffInputs:
         def __init__(self,
-                tariff_duration: int,
-                pc_escalation: float,
-                pc_escalation_rate: float):
+                tariff_duration: int = 20,
+                pc_escalation: float = 1.0,
+                pc_escalation_rate: float = 0.02):
                 self.tariff_duration= tariff_duration
                 self.pc_escalation= pc_escalation
                 self.pc_escalation_rate= pc_escalation_rate 
@@ -103,19 +103,69 @@ class ForecastInputs:
                 self.forecasted_escal_rate= forecasted_escal_rate
 class CostFedIncInputs:
         def __init__(self,
-                itc_or_cash: bool,
-                itc_amount: float,
-                itc_utilization_factor: float):
+                itc_or_cash: bool = True,
+                itc_amount: float = 0.26,
+                itc_utilization_factor: float = 1.0,
+                itc_or_cash_grant_dollar:int = 0,
+                fed_additional_grants:int= 10_000,
+                fed_form: str = 'Performance'):
                 self.itc_or_cash= itc_or_cash
                 self.itc_amount= itc_amount
                 self.itc_utilization_factor= itc_utilization_factor
-
+                self.itc_or_cash_dollar = itc_or_cash_grant_dollar
+                self.fed_additional_grants= fed_additional_grants
+                self.fed_form = fed_form
+class CostStateIncInputs:
+        def __init__(self,
+                itc_amount: float = 0.30,
+                itc_utilization_factor: float = 1.0,
+                itc_realization_period: int = 5,
+                itc_or_cash_grant_dollar:int = 0,
+                state_additional_grants:float= 0.0,
+                state_form:str = 'Neither'):
+                self.itc_amount= itc_amount
+                self.itc_utilization_factor= itc_utilization_factor
+                self.itc_realization_period= itc_realization_period
+                self.itc_or_cash_dollar= itc_or_cash_grant_dollar
+                self.state_additional_grants= state_additional_grants
+                self.state_form = state_form
+class CostFedIncInputsPerf:
+        def __init__(self,
+                ptc_or_repi: str = 'PTC',
+                pbi_rate: float = 2.3,
+                pbi_util_rate: float = 1.0,
+                pbi_duration: int = 10,
+                pbi_escalation_rate: float = 0.02,
+        ):
+                self.ptc_or_repi=  ptc_or_repi
+                self.pbi_rate= pbi_rate
+                self.pbi_util_rate= pbi_util_rate
+                self.pbi_duration= pbi_duration
+                self.pbi_escalation_rate= pbi_escalation_rate
+                
+class CostStateIncInputsPerf:
+        def __init__(self,
+                cash_or_taxit: str = 'Cash',
+                pbi_cap: int = 0,
+                pbi_rate: float = 1.5,
+                pbi_util_rate: float = 1.0,
+                pbi_duration: int = 10,
+                pbi_escalation_rate: float = 0.02,
+                total_cap = 500_000
+        ):
+                self.cash_or_taxit=  cash_or_taxit
+                self.pbi_cap = pbi_cap
+                self.pbi_rate= pbi_rate
+                self.pbi_util_rate= pbi_util_rate
+                self.pbi_duration= pbi_duration
+                self.pbi_escalation_rate= pbi_escalation_rate
+                self.total_cap = total_cap
 class CapExInverterInputs:
         def __init__(self,
-                first_replacement: int,
-                first_replacement_cost: float,
-                second_replacement: int,
-                second_replacement_cost: float):
+                first_replacement: int = 10,
+                first_replacement_cost: float = 0.235,
+                second_replacement: int = 20,
+                second_replacement_cost: float = 0.245):
                 self.first_replacement= first_replacement
                 self.first_replacement_cost= first_replacement_cost
                 self.second_replacement= second_replacement
@@ -123,11 +173,11 @@ class CapExInverterInputs:
 
 class ReservesInput:
         def __init__(self,
-                fund_from_operations: bool,
-                reserve_req: int,
-                debt_service_req: int,
-                om_wc_req: int,
-                interest_on_reserves: float):
+                fund_from_operations: bool = False,
+                reserve_req: int = 100_000,
+                debt_service_req: int = 6,
+                om_wc_req: int = 6,
+                interest_on_reserves: float = 0.02):
                 self.fund_from_operations= fund_from_operations
                 self.reserve_req= reserve_req
                 self.debt_service_req= debt_service_req
@@ -136,7 +186,7 @@ class ReservesInput:
 
 class DepreciationInput:
         def __init__(self,
-                bonus_depreciation: bool,
-                bonus_depreciation_pc: float):
+                bonus_depreciation: bool = True,
+                bonus_depreciation_pc: float = 0.5):
                 self.bonus_depreciation= bonus_depreciation
                 self.bonus_depreciation_pc= bonus_depreciation_pc
